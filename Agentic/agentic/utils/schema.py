@@ -14,6 +14,7 @@ from llama_index.core.tools import QueryEngineTool, ToolMetadata, FunctionTool
 from llama_index.core.memory import ChatMemoryBuffer
 import os
 from dotenv import load_dotenv
+import datetime
 
 load_dotenv()
 
@@ -65,7 +66,7 @@ class NCERTTextbookAssistant:
         self.load_or_create_index()
 
     def configure_settings(self):
-        Settings.llm = Groq(model="llama-3.1-8b-instant", api_key=os.getenv("GROQ_API_KEY"))
+        Settings.llm = Groq(model="llama-3.1-70b-versatile", api_key=os.getenv("GROQ_API_KEY"))
         Settings.embed_model = JinaEmbedding(
             api_key=os.getenv("JINA_API_KEY"),
             model="jina-embeddings-v2-base-en",
@@ -109,6 +110,16 @@ class NCERTTextbookAssistant:
                 description="Search the NCERT textbook database for specific information. Use this when you need to reference exact content or facts from the textbooks.",
             ),
         )
+        def current_affairs(query: str) -> str:
+            current_date = datetime.datetime.now().strftime("%Y-%m-%d")
+            return f"As an AI language model, I don't have real-time information about current affairs. My knowledge cutoff is before the current date ({current_date}). For the most up-to-date information on current affairs, I recommend checking reliable news sources or official websites."
+        
+        current_affairs_tool = FunctionTool.from_defaults(
+            fn=current_affairs,
+            name="current_affairs",
+            description="Explanation about the limitations of AI models in providing real-time information on current affairs"
+        )
+
 
         def get_subject_overview(subject: str, grade: int) -> str:
             # This function would provide a general overview of a subject for a specific grade
@@ -133,7 +144,7 @@ class NCERTTextbookAssistant:
         )
 
         self.agent = ReActAgent.from_tools(
-            [search_tool, subject_overview_tool, practice_questions_tool],
+            [search_tool, subject_overview_tool, practice_questions_tool, current_affairs_tool],
             verbose=True,
             system_prompt=self.system_prompt,
             memory=ChatMemoryBuffer.from_defaults(token_limit=4096),
