@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "sarvam-programming-assignment"
+version = "0.1.0"
+description = ""
+authors = ["samarth777 <samarthprakash8@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+llama-index = "^0.11.9"
+fastapi = "^0.114.2"
+uvicorn = "^0.30.6"
+streamlit = "^1.38.0"
+llama-index-llms-groq = "^0.2.0"
+llama-index-embeddings-jinaai = "^0.3.0"
+python-dotenv = "^1.0.1"
+groq = "^0.11.0"
+python-multipart = "^0.0.9"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
