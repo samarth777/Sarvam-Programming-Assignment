@@ -106,13 +106,13 @@ You can run either the RAG system or the Agentic system:
 
 1. For the RAG system:
    ```
-   cd RAG
+   cd RAG/rag-system
    uvicorn main:app --reload
    ```
 
 2. For the Agentic system:
    ```
-   cd Agentic
+   cd Agentic/agentic
    uvicorn main:app --reload
    ```
 
